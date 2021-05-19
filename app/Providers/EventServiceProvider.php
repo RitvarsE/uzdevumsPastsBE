@@ -2,6 +2,7 @@
 
 namespace App\Providers;
 
+use App\Models\CurriculumVitae;
 use Illuminate\Auth\Events\Registered;
 use Illuminate\Auth\Listeners\SendEmailVerificationNotification;
 use Illuminate\Foundation\Support\Providers\EventServiceProvider as ServiceProvider;
@@ -27,6 +28,12 @@ class EventServiceProvider extends ServiceProvider
      */
     public function boot()
     {
-        //
+        CurriculumVitae::deleting(function ($cv) {
+            $cv->jobs()->delete();
+            $cv->educations()->delete();
+            $cv->skills()->delete();
+            $cv->basics()->delete();
+            $cv->others()->delete();
+        });
     }
 }
